@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Content from "./components/Content.vue";
+import Content from "./components/content/Content.vue";
 import ControlBar from "./components/control-bar/ControlBar.vue";
 import Sidebar from "./components/sidebar/Sidebar.vue";
 </script>
