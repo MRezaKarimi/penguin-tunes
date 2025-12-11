@@ -7,11 +7,21 @@ import {
   IconMusic,
   IconFolder,
   IconMicrophone2,
+  IconSearch,
 } from "@tabler/icons-vue";
 </script>
 
 <template>
-  <div class="flex flex-col gap-1 shrink-0 w-64 bg-sidebar-bg px-4 py-10">
+  <div class="flex flex-col gap-1 shrink-0 w-64 bg-sidebar-bg px-4 py-5">
+    <div class="flex items-center gap-3 py-1 px-2 bg-input rounded-lg mb-4">
+      <IconSearch stroke="1.5" size="20" class="shrink-0" />
+      <input
+        class="outline-none border-none bg-transparent"
+        placeholder="Search..."
+        name="search"
+      />
+    </div>
+
     <SidebarItem>
       <IconHome stroke="1.25" />
       Home
