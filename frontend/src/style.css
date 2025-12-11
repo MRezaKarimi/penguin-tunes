@@ -5,6 +5,7 @@
 @theme {
   --color-sidebar-bg: var(--sb-background);
   --color-hover: var(--hover);
+  --color-input: var(--input-background);
 }
 
 html {
