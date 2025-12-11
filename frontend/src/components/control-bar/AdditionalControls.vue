@@ -8,7 +8,7 @@ import {
 </script>
 
 <template>
-  <div class="flex items-center gap-4 pe-8">
+  <div class="flex items-center gap-4 pe-4">
     <IconPlaylistAdd stroke="1.75" size="24" class="cursor-pointer" />
     <IconVolume stroke="1.75" size="20" class="cursor-pointer" />
     <IconAdjustments stroke="1.75" size="20" class="cursor-pointer" />
