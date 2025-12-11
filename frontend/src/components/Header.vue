@@ -1,5 +1,8 @@
 <script lang="ts" setup>
 import { IconX, IconWindowMinimize, IconMaximize } from "@tabler/icons-vue";
+import { useTrackStore } from "@/lib/stores/track";
+
+const track = useTrackStore();
 </script>
 
 <template>
@@ -24,6 +27,6 @@ import { IconX, IconWindowMinimize, IconMaximize } from "@tabler/icons-vue";
       </span>
     </div>
 
-    <div>Blank Space</div>
+    <div>{{ track.name }}</div>
   </header>
 </template>
