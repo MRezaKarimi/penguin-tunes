@@ -14,3 +14,7 @@ The logic is handled by Go and UI is crafted using VueJS
 - write styles as tailwind as much as possible
 - always use `@/` path alias in import statements
 - if a specific style is not supported by tailwind, write styles inside `<style scoped>` tag
+
+## Backend (Go)
+
+- follow best practices and common conventions
