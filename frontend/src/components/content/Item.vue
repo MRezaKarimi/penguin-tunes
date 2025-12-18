@@ -9,6 +9,7 @@ import {
   IconMicrophone2,
   IconPlayerPlayFilled,
 } from "@tabler/icons-vue";
+import { coverPathToURL } from "@/lib/utils";
 
 const props = withDefaults(
   defineProps<{
@@ -39,21 +40,12 @@ const coverUrl = computed(() => {
     const group = props.data;
     if (group?.tracks?.length > 0 && group.tracks[0].cover) {
       const firstTrackWithCover = group.tracks.find((t: any) => t.cover);
-      if (firstTrackWithCover) {
-        const c = firstTrackWithCover.cover as string;
-        // keep basename so URL is /covers/<file>
-        const name = c.split("/covers/").pop();
-        return encodeURI(`/covers/${name}`);
-      }
+      return coverPathToURL(firstTrackWithCover?.cover);
     }
     return "";
   }
 
-  const t = props.data;
-  if (!t?.cover) return "";
-  const c = t.cover as string;
-  const name = c.split("/covers/").pop();
-  return encodeURI(`/covers/${name}`);
+  return coverPathToURL(props.data.cover);
 });
 
 const title = computed(() => {
@@ -79,7 +71,7 @@ const subtitle = computed(() => {
     <div
       v-if="coverUrl"
       class="w-full aspect-square bg-cover bg-center"
-      :style="coverUrl ? { 'background-image': `url('${coverUrl}')` } : {}"
+      :style="{ 'background-image': `url('${coverUrl}')` }"
     />
 
     <div
