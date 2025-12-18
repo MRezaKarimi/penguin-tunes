@@ -1,5 +1,11 @@
 <script lang="ts" setup>
-import { IconX, IconWindowMinimize, IconMaximize } from "@tabler/icons-vue";
+import {
+  IconX,
+  IconWindowMinimize,
+  IconMaximize,
+  IconArrowLeft,
+  IconArrowRight,
+} from "@tabler/icons-vue";
 import { useTrackStore } from "@/lib/stores/track";
 
 const track = useTrackStore();
@@ -7,26 +13,32 @@ const track = useTrackStore();
 
 <template>
   <header
-    class="relative flex justify-center items-center shrink-0 h-12"
+    class="flex justify-center items-center gap-5 shrink-0 h-12 px-5"
     style="--wails-draggable: drag"
   >
-    <div
-      class="absolute end-0 flex justify-end items-center gap-5 w-full shrink-0 py-3 px-5"
-    >
-      <span class="cursor-pointer" onclick="window.runtime.WindowMinimise()">
-        <IconWindowMinimize stroke="1.5" size="18" />
-      </span>
-      <span
-        class="cursor-pointer"
-        onclick="window.runtime.WindowToggleMaximise()"
-      >
-        <IconMaximize stroke="1.5" size="18" />
-      </span>
-      <span class="cursor-pointer" onclick="window.runtime.Quit()">
-        <IconX stroke="1.5" size="18" />
-      </span>
-    </div>
+    <!-- Back/Forward -->
+    <span class="cursor-pointer" onclick="window.runtime.Quit()">
+      <IconArrowLeft stroke="1.5" size="20" />
+    </span>
+    <span class="cursor-pointer" onclick="window.runtime.Quit()">
+      <IconArrowRight stroke="1.5" size="20" />
+    </span>
 
-    <div>{{ track.name }}</div>
+    <!-- Title -->
+    <div class="grow select-none">{{ track.name || "PenguinTunes" }}</div>
+
+    <!-- Window Controls -->
+    <span class="cursor-pointer" onclick="window.runtime.WindowMinimise()">
+      <IconWindowMinimize stroke="1.5" size="18" />
+    </span>
+    <span
+      class="cursor-pointer"
+      onclick="window.runtime.WindowToggleMaximise()"
+    >
+      <IconMaximize stroke="1.5" size="18" />
+    </span>
+    <span class="cursor-pointer" onclick="window.runtime.Quit()">
+      <IconX stroke="1.5" size="18" />
+    </span>
   </header>
 </template>
