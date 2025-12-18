@@ -67,7 +67,7 @@ const title = computed(() => {
 const subtitle = computed(() => {
   if (props.kind === "group") {
     const g = props.data;
-    return `${(g.tracks || []).length} items`;
+    return `${(g.tracks || []).length} songs`;
   }
   const t = props.data;
   return t?.artist || "Unknown Artist";
@@ -75,7 +75,7 @@ const subtitle = computed(() => {
 </script>
 
 <template>
-  <div class="relative flex flex-col gap-1.5 cursor-pointer group">
+  <div class="relative flex flex-col cursor-pointer group">
     <div
       v-if="coverUrl"
       class="w-full aspect-square bg-cover bg-center"
@@ -89,7 +89,7 @@ const subtitle = computed(() => {
       <component :is="getIcon()" size="50" stroke="1.25" />
     </div>
 
-    <div class="text-sm truncate">{{ title }}</div>
+    <div class="text-sm truncate mt-2 mb-1">{{ title }}</div>
     <div class="text-xs font-light text-muted truncate">{{ subtitle }}</div>
 
     <div
