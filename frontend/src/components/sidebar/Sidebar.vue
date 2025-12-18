@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { useMusicLibraryStore } from "@/lib/stores/library";
 import SidebarItem from "./SidebarItem.vue";
 import {
   IconHome,
@@ -9,6 +10,8 @@ import {
   IconMicrophone2,
   IconSearch,
 } from "@tabler/icons-vue";
+
+const library = useMusicLibraryStore();
 </script>
 
 <template>
@@ -27,27 +30,42 @@ import {
       Home
     </SidebarItem>
 
-    <SidebarItem>
+    <SidebarItem
+      :is-active="library.view === 'playlist'"
+      @click="library.setView('playlist')"
+    >
       <IconPlaylist stroke="1.25" />
       Playlists
     </SidebarItem>
 
-    <SidebarItem>
+    <SidebarItem
+      :is-active="library.view === 'folder'"
+      @click="library.setView('folder')"
+    >
       <IconFolder stroke="1.25" />
       Folders
     </SidebarItem>
 
-    <SidebarItem>
+    <SidebarItem
+      :is-active="library.view === 'album'"
+      @click="library.setView('album')"
+    >
       <IconDisc stroke="1.25" />
       Albums
     </SidebarItem>
 
-    <SidebarItem>
+    <SidebarItem
+      :is-active="library.view === 'track'"
+      @click="library.setView('track')"
+    >
       <IconMusic stroke="1.25" />
       Tracks
     </SidebarItem>
 
-    <SidebarItem>
+    <SidebarItem
+      :is-active="library.view === 'artist'"
+      @click="library.setView('artist')"
+    >
       <IconMicrophone2 stroke="1.25" />
       Artists
     </SidebarItem>
