@@ -6,7 +6,7 @@ import AdditionalControls from "./AdditionalControls.vue";
 </script>
 
 <template>
-  <div class="flex items-center p-4">
+  <div class="flex items-center p-4 border-t-2 border-sidebar-bg">
     <TrackInfo />
 
     <div class="w-full max-w-xl mx-auto">
