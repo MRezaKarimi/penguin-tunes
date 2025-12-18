@@ -7,6 +7,7 @@ import {
   IconMusic,
   IconFolder,
   IconMicrophone2,
+  IconPlayerPlayFilled,
 } from "@tabler/icons-vue";
 
 const props = withDefaults(
@@ -74,19 +75,27 @@ const subtitle = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-1.5 cursor-pointer">
+  <div class="relative flex flex-col gap-1.5 cursor-pointer group">
     <div
       v-if="coverUrl"
       class="w-full aspect-square bg-cover bg-center"
       :style="coverUrl ? { 'background-image': `url('${coverUrl}')` } : {}"
     />
+
     <div
       v-else
       class="flex flex-col justify-center items-center w-full aspect-square bg-cover bg-center bg-hover"
     >
       <component :is="getIcon()" size="50" stroke="1.25" />
     </div>
+
     <div class="text-sm truncate">{{ title }}</div>
     <div class="text-xs font-light text-muted truncate">{{ subtitle }}</div>
+
+    <div
+      class="absolute top-1/2 end-2.5 bg-rose-500 rounded-full p-2 hover:scale-110 opacity-0 group-hover:opacity-100 transition-all"
+    >
+      <IconPlayerPlayFilled size="20" stroke="1.5" class="text-white" />
+    </div>
   </div>
 </template>
