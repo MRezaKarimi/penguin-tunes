@@ -130,7 +130,7 @@ func (wa *Watcher) scheduleSave(d time.Duration) {
             fmt.Printf("index save error: %v\n", err)
         }
         if wa.emitter != nil {
-            wa.emitter.Emit(wa.ctx, "index-updated", wa.idx.GetAll())
+            wa.emitter.Emit(wa.ctx, "index-updated", nil)
         }
     })
 }

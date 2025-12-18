@@ -1,10 +1,92 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { computed } from "vue";
+import { useMusicLibraryStore } from "@/lib/stores/library";
+import {
+  IconPlaylist,
+  IconDisc,
+  IconMusic,
+  IconFolder,
+  IconMicrophone2,
+} from "@tabler/icons-vue";
+
+const props = withDefaults(
+  defineProps<{
+    data: any;
+    kind: "group" | "track";
+  }>(),
+  { kind: "group" }
+);
+
+const library = useMusicLibraryStore();
+
+function getIcon() {
+  if (library.view === "folder") {
+    return IconFolder;
+  } else if (library.view === "album") {
+    return IconDisc;
+  } else if (library.view === "track") {
+    return IconMicrophone2;
+  } else if (library.view === "playlist") {
+    return IconPlaylist;
+  } else {
+    return IconMusic;
+  }
+}
+
+const coverUrl = computed(() => {
+  if (props.kind === "group") {
+    const group = props.data;
+    if (group?.tracks?.length > 0 && group.tracks[0].cover) {
+      const firstTrackWithCover = group.tracks.find((t: any) => t.cover);
+      if (firstTrackWithCover) {
+        const c = firstTrackWithCover.cover as string;
+        // keep basename so URL is /covers/<file>
+        const name = c.split("/covers/").pop();
+        return encodeURI(`/covers/${name}`);
+      }
+    }
+    return "";
+  }
+
+  const t = props.data;
+  if (!t?.cover) return "";
+  const c = t.cover as string;
+  const name = c.split("/covers/").pop();
+  return encodeURI(`/covers/${name}`);
+});
+
+const title = computed(() => {
+  if (props.kind === "group") {
+    return props.data.name || "Unknown";
+  }
+  const t = props.data;
+  return t?.title || t?.name || "Unknown Track";
+});
+
+const subtitle = computed(() => {
+  if (props.kind === "group") {
+    const g = props.data;
+    return `${(g.tracks || []).length} items`;
+  }
+  const t = props.data;
+  return t?.artist || "Unknown Artist";
+});
+</script>
 
 <template>
-  <div
-    class="album-item w-full aspect-square bg-cover bg-center cursor-pointer"
-    style="
-      background-image: url(https://i.redd.it/my-rendition-of-the-speak-now-taylors-version-cover-art-in-v0-spqmzz1s90cb1.jpg?width=770&format=pjpg&auto=webp&s=dcabdcd2a85cbf2370c19c05f6263789f8bf4403);
-    "
-  />
+  <div class="flex flex-col gap-1.5 cursor-pointer">
+    <div
+      v-if="coverUrl"
+      class="w-full aspect-square bg-cover bg-center"
+      :style="coverUrl ? { 'background-image': `url('${coverUrl}')` } : {}"
+    />
+    <div
+      v-else
+      class="flex flex-col justify-center items-center w-full aspect-square bg-cover bg-center bg-hover"
+    >
+      <component :is="getIcon()" size="50" stroke="1.25" />
+    </div>
+    <div class="text-sm truncate">{{ title }}</div>
+    <div class="text-xs font-light text-muted truncate">{{ subtitle }}</div>
+  </div>
 </template>

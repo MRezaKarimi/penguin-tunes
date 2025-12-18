@@ -64,7 +64,7 @@ func (a *App) startup(ctx context.Context) {
 	}
 	// Start initial scan in background
 	// Emit current index (if any) so frontend can display it instantly
-	wailsruntime.EventsEmit(a.ctx, "index-updated", a.idx.GetAll())
+	wailsruntime.EventsEmit(a.ctx, "index-updated")
 	go func() {
 		cfg := cm.GetConfig()
 		if len(cfg.SrcDirs) > 0 {
@@ -73,7 +73,7 @@ func (a *App) startup(ctx context.Context) {
 				fmt.Printf("scan error: %v\n", err)
 			}
 			// emit event to frontend
-			wailsruntime.EventsEmit(a.ctx, "index-updated", a.idx.GetAll())
+			wailsruntime.EventsEmit(a.ctx, "index-updated")
 		}
 	}()
 }
@@ -101,7 +101,7 @@ func (a *App) SaveConfig(cfg cfg.Config) error {
 			if err := indexer.ScanDirs(cfg.SrcDirs, a.idx, goruntime.NumCPU()); err != nil {
 				fmt.Printf("scan error: %v\n", err)
 			}
-			wailsruntime.EventsEmit(a.ctx, "index-updated", a.idx.GetAll())
+			wailsruntime.EventsEmit(a.ctx, "index-updated")
 		}
 	}()
 	// restart watchers to pick new srcDirs
@@ -123,6 +123,61 @@ func (a *App) GetTracks() ([]*indexer.Track, error) {
 		return nil, fmt.Errorf("index not initialized")
 	}
 	return a.idx.GetAll(), nil
+}
+
+// Group represents a grouping of tracks by a key (album/artist/folder)
+type Group struct {
+	Name   string           `json:"name"`
+	Tracks []*indexer.Track `json:"tracks"`
+}
+
+// GetAlbums returns tracks grouped by album
+func (a *App) GetAlbums() ([]Group, error) {
+	if a.idx == nil {
+		return nil, fmt.Errorf("index not initialized")
+	}
+	groups := map[string][]*indexer.Track{}
+	for _, t := range a.idx.GetAll() {
+		groups[t.Album] = append(groups[t.Album], t)
+	}
+	out := make([]Group, 0, len(groups))
+	for k, v := range groups {
+		out = append(out, Group{Name: k, Tracks: v})
+	}
+	return out, nil
+}
+
+// GetArtists returns tracks grouped by artist
+func (a *App) GetArtists() ([]Group, error) {
+	if a.idx == nil {
+		return nil, fmt.Errorf("index not initialized")
+	}
+	groups := map[string][]*indexer.Track{}
+	for _, t := range a.idx.GetAll() {
+		groups[t.Artist] = append(groups[t.Artist], t)
+	}
+	out := make([]Group, 0, len(groups))
+	for k, v := range groups {
+		out = append(out, Group{Name: k, Tracks: v})
+	}
+	return out, nil
+}
+
+// GetFolders returns tracks grouped by folder (directory name)
+func (a *App) GetFolders() ([]Group, error) {
+	if a.idx == nil {
+		return nil, fmt.Errorf("index not initialized")
+	}
+	groups := map[string][]*indexer.Track{}
+	for _, t := range a.idx.GetAll() {
+		dir := filepath.Dir(t.Path)
+		groups[dir] = append(groups[dir], t)
+	}
+	out := make([]Group, 0, len(groups))
+	for k, v := range groups {
+		out = append(out, Group{Name: k, Tracks: v})
+	}
+	return out, nil
 }
 
 // AddSrcDir adds a directory to srcDirs and persists it
