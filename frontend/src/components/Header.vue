@@ -25,7 +25,12 @@ const track = useTrackStore();
     </span>
 
     <!-- Title -->
-    <div class="grow select-none">{{ track.name || "PenguinTunes" }}</div>
+    <div
+      class="grow select-none"
+      ondblclick="window.runtime.WindowToggleMaximise()"
+    >
+      {{ track.name || "PenguinTunes" }}
+    </div>
 
     <!-- Window Controls -->
     <span class="cursor-pointer" onclick="window.runtime.WindowMinimise()">
