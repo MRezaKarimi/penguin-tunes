@@ -68,12 +68,13 @@ const subtitle = computed(() => {
 
 <template>
   <div class="relative flex flex-col cursor-pointer group">
+    <!-- Cover image if exists -->
     <div
       v-if="coverUrl"
       class="w-full aspect-square bg-cover bg-center"
       :style="{ 'background-image': `url('${coverUrl}')` }"
     />
-
+    <!-- Otherwise show an icon as a placeholder -->
     <div
       v-else
       class="flex flex-col justify-center items-center w-full aspect-square bg-cover bg-center bg-hover"
@@ -84,7 +85,9 @@ const subtitle = computed(() => {
     <div class="text-sm truncate mt-2 mb-1">{{ title }}</div>
     <div class="text-xs font-light text-muted truncate">{{ subtitle }}</div>
 
+    <!-- Add current group to the queue and play the first track in it -->
     <div
+      v-if="kind === 'group'"
       class="absolute top-1/2 end-2.5 bg-rose-500 rounded-full p-2 hover:scale-110 opacity-0 group-hover:opacity-100 transition-all"
     >
       <IconPlayerPlayFilled size="20" stroke="1.5" class="text-white" />
