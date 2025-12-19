@@ -24,7 +24,7 @@ func main() {
 		MinHeight: 420,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
-			Middleware: assetserver.ChainMiddleware(getCoversMiddleware()),
+			Middleware: assetserver.ChainMiddleware(getCoversMiddleware(), getAssetsMiddleware()),
 		},
 		Frameless: true,
 		BackgroundColour: &options.RGBA{R: 23, G: 23, B: 25, A: 1},

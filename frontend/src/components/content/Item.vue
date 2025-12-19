@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useMusicLibraryStore } from "@/lib/stores/library";
+import { coverPathToURL } from "@/lib/utils";
+import { useQueueStore } from "@/lib/stores/queue";
 import {
   IconPlaylist,
   IconDisc,
@@ -9,15 +11,11 @@ import {
   IconMicrophone2,
   IconPlayerPlayFilled,
 } from "@tabler/icons-vue";
-import { coverPathToURL } from "@/lib/utils";
-import { useQueueStore } from "@/lib/stores/queue";
 
 const library = useMusicLibraryStore();
 const queue = useQueueStore();
 
 const props = defineProps<{ data: (typeof library.tracks)[number] }>();
-
-const kind = "tracks" in props.data ? "group" : "track";
 
 function getIcon() {
   if (library.view === "folder") {
@@ -59,7 +57,7 @@ const subtitle = computed(() => {
 <template>
   <div
     class="relative flex flex-col cursor-pointer group"
-    @click="kind === 'track' && queue.playTrack(data)"
+    @click="'path' in data && queue.playTrack(data)"
   >
     <!-- Cover image if exists -->
     <div
@@ -80,9 +78,9 @@ const subtitle = computed(() => {
 
     <!-- Add current group to the queue and play the first track in it -->
     <div
-      v-if="kind === 'group'"
+      v-if="'tracks' in data"
       class="absolute top-1/2 end-2.5 bg-rose-500 rounded-full p-2 hover:scale-110 opacity-0 group-hover:opacity-100 transition-all"
-      @click.stop="queue.playGroup(data, 0)"
+      @click.stop="queue.playGroup(data.tracks)"
     >
       <IconPlayerPlayFilled size="20" stroke="1.5" class="text-white" />
     </div>

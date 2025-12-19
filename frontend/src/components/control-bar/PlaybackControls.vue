@@ -15,16 +15,19 @@ const queue = useQueueStore();
     <IconPlayerSkipBackFilled
       size="18"
       class="cursor-pointer"
+      :class="{ 'pointer-events-none opacity-50': !queue.hasPrevious }"
       @click="queue.playPrevious"
     />
     <component
       :is="queue.isPlaying ? IconPlayerPauseFilled : IconPlayerPlayFilled"
       size="25"
       class="cursor-pointer"
+      @click="queue.playPause"
     />
     <IconPlayerSkipForwardFilled
       size="18"
       class="cursor-pointer"
+      :class="{ 'pointer-events-none opacity-50': !queue.hasNext }"
       @click="queue.playNext"
     />
   </div>

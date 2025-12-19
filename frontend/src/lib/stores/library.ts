@@ -1,20 +1,8 @@
 import { computed, ref } from "vue";
 import { defineStore } from "pinia";
+import { Track } from "@/types";
 import { ReadIndex } from "../../../wailsjs/go/main/App";
 import * as runtime from "../../../wailsjs/runtime/runtime";
-
-interface Track {
-  id: string;
-  path: string;
-  title: string;
-  album: string;
-  artist: string;
-  composer: string;
-  genre: string;
-  track_number: number;
-  cover: string;
-  year: number;
-}
 
 export const useMusicLibraryStore = defineStore("library", () => {
   const _tracks = ref<Track[]>([]);
