@@ -10,16 +10,14 @@ import {
   IconPlayerPlayFilled,
 } from "@tabler/icons-vue";
 import { coverPathToURL } from "@/lib/utils";
-
-const props = withDefaults(
-  defineProps<{
-    data: any;
-    kind: "group" | "track";
-  }>(),
-  { kind: "group" }
-);
+import { useQueueStore } from "@/lib/stores/queue";
 
 const library = useMusicLibraryStore();
+const queue = useQueueStore();
+
+const props = defineProps<{ data: (typeof library.tracks)[number] }>();
+
+const kind = "tracks" in props.data ? "group" : "track";
 
 function getIcon() {
   if (library.view === "folder") {
@@ -36,7 +34,7 @@ function getIcon() {
 }
 
 const coverUrl = computed(() => {
-  if (props.kind === "group") {
+  if ("tracks" in props.data) {
     const group = props.data;
     if (group?.tracks?.length > 0 && group.tracks[0].cover) {
       const firstTrackWithCover = group.tracks.find((t: any) => t.cover);
@@ -48,16 +46,8 @@ const coverUrl = computed(() => {
   return coverPathToURL(props.data.cover);
 });
 
-const title = computed(() => {
-  if (props.kind === "group") {
-    return props.data.name || "Unknown";
-  }
-  const t = props.data;
-  return t?.title || t?.name || "Unknown Track";
-});
-
 const subtitle = computed(() => {
-  if (props.kind === "group") {
+  if ("tracks" in props.data) {
     const g = props.data;
     return `${(g.tracks || []).length} songs`;
   }
@@ -67,7 +57,10 @@ const subtitle = computed(() => {
 </script>
 
 <template>
-  <div class="relative flex flex-col cursor-pointer group">
+  <div
+    class="relative flex flex-col cursor-pointer group"
+    @click="kind === 'track' && queue.playTrack(data)"
+  >
     <!-- Cover image if exists -->
     <div
       v-if="coverUrl"
@@ -82,13 +75,14 @@ const subtitle = computed(() => {
       <component :is="getIcon()" size="50" stroke="1.25" />
     </div>
 
-    <div class="text-sm truncate mt-2 mb-1">{{ title }}</div>
+    <div class="text-sm truncate mt-2 mb-1">{{ data.title }}</div>
     <div class="text-xs font-light text-muted truncate">{{ subtitle }}</div>
 
     <!-- Add current group to the queue and play the first track in it -->
     <div
       v-if="kind === 'group'"
       class="absolute top-1/2 end-2.5 bg-rose-500 rounded-full p-2 hover:scale-110 opacity-0 group-hover:opacity-100 transition-all"
+      @click.stop="queue.playGroup(data, 0)"
     >
       <IconPlayerPlayFilled size="20" stroke="1.5" class="text-white" />
     </div>

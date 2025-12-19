@@ -21,12 +21,7 @@ const library = useMusicLibraryStore();
         align-content: start;
       "
     >
-      <Item
-        v-for="item in library.tracks"
-        :key="item.name"
-        :data="item"
-        :kind="library.view === 'track' ? 'track' : 'group'"
-      />
+      <Item v-for="item in library.tracks" :key="item.id" :data="item" />
 
       <!-- Spacer divs to ensure proper grid layout -->
       <div v-for="i in 10" :key="i" />

@@ -6,24 +6,12 @@ export function AddSrcDir(arg1) {
   return window['go']['main']['App']['AddSrcDir'](arg1);
 }
 
-export function GetAlbums() {
-  return window['go']['main']['App']['GetAlbums']();
-}
-
-export function GetArtists() {
-  return window['go']['main']['App']['GetArtists']();
-}
-
 export function GetConfig() {
   return window['go']['main']['App']['GetConfig']();
 }
 
-export function GetFolders() {
-  return window['go']['main']['App']['GetFolders']();
-}
-
-export function GetTracks() {
-  return window['go']['main']['App']['GetTracks']();
+export function ReadIndex() {
+  return window['go']['main']['App']['ReadIndex']();
 }
 
 export function RemoveSrcDir(arg1) {
