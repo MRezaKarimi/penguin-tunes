@@ -6,9 +6,9 @@ import {
   IconArrowLeft,
   IconArrowRight,
 } from "@tabler/icons-vue";
-import { useTrackStore } from "@/lib/stores/track";
+import { useQueueStore } from "@/lib/stores/queue";
 
-const track = useTrackStore();
+const queue = useQueueStore();
 </script>
 
 <template>
@@ -29,7 +29,7 @@ const track = useTrackStore();
       class="grow select-none"
       ondblclick="window.runtime.WindowToggleMaximise()"
     >
-      {{ track.name || "PenguinTunes" }}
+      {{ queue.currentlyPlaying.title || "PenguinTunes" }}
     </div>
 
     <!-- Window Controls -->
